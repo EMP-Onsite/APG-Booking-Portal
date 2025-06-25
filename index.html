@@ -85,7 +85,30 @@
     .state.selected {
       fill: #00677F;
     }
-  </style>
+  
+
+.main-content {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 30px;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+.site-list {
+  flex: 1;
+  min-width: 300px;
+  max-width: 600px;
+}
+
+.map-container {
+  flex: 1;
+  min-width: 300px;
+  max-width: 600px;
+  text-align: center;
+}
+
+</style>
 </head>
 <body>
   <header>
@@ -93,7 +116,9 @@
     <h1>Book an Appointment</h1>
   </header>
 
-  <input type="text" id="search" placeholder="Search by site name, suburb or postcode..." />
+  <div class="main-content"><div class="site-list"><input type="text" id="search" placeholder="Search by site name, suburb or postcode..." />
+<div id="results"></div></div>
+<div class="map-container">
 
   <div class="map-container">
 <?xml version="1.0" encoding="utf-8"?>
