@@ -125,25 +125,29 @@
       }
     };
 
-    window.simplemaps_countrymap.hooks = {};
-    window.simplemaps_countrymap.hooks.state_click = function(id) {
-      const stateMap = {
-        AUNSW: "NSW",
-        AUQLD: "QLD",
-        AUVIC: "VIC",
-        AUWA: "WA",
-        AUSA: "SA",
-        AUNT: "NT",
-        AUTAS: "TAS",
-        AUACT: "ACT"
+    // Wait for the map to load before attaching hooks
+    function simplemaps_countrymap_load() {
+      simplemaps_countrymap.hooks = {
+        state_click: function(id) {
+          const stateMap = {
+            AUNSW: "NSW",
+            AUQLD: "QLD",
+            AUVIC: "VIC",
+            AUWA: "WA",
+            AUSA: "SA",
+            AUNT: "NT",
+            AUTAS: "TAS",
+            AUACT: "ACT"
+          };
+          const readable = stateMap[id];
+          if (readable) {
+            const input = document.getElementById("search");
+            input.value = readable;
+            input.dispatchEvent(new Event("input"));
+          }
+        }
       };
-      const readable = stateMap[id];
-      if (readable) {
-        const input = document.getElementById("search");
-        input.value = readable;
-        input.dispatchEvent(new Event("input"));
-      }
-    };
+    }
   </script>
 
   <script src="https://simplemaps.com/static/js/countrymap.js"></script>
