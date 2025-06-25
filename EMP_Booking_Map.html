@@ -1,0 +1,146 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>EMP Booking Map</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 1em;
+      background: #f4f7f6;
+    }
+    header {
+      text-align: center;
+    }
+    header img {
+      max-height: 60px;
+      margin-bottom: 1em;
+    }
+    h1 {
+      margin-bottom: 0.5em;
+    }
+    #search {
+      display: block;
+      margin: 1em auto 2em;
+      padding: 0.75em;
+      width: 100%;
+      max-width: 500px;
+      font-size: 1em;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+    }
+    .map {
+      max-width: 700px;
+      margin: 0 auto 2em;
+    }
+    .state {
+      fill: #619b7f;
+      stroke: #fff;
+      cursor: pointer;
+      transition: fill 0.3s;
+    }
+    .state:hover {
+      fill: #3a6f5c;
+    }
+    .site-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1em;
+      justify-content: center;
+    }
+    .site {
+      background: #fff;
+      padding: 1em;
+      border-radius: 8px;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+      width: 280px;
+    }
+    .site h3 {
+      margin: 0 0 0.5em;
+      font-size: 1.1em;
+    }
+    .site a {
+      color: #007acc;
+      text-decoration: none;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <img src="emp_white_rgb.png" alt="EMP Logo">
+    <h1>Book an Appointment</h1>
+  </header>
+
+  <input type="text" id="search" placeholder="Search by site name, state or postcode...">
+
+  <div class="map">
+    <!-- Simplified SVG map with state IDs -->
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 600" style="width: 100%; height: auto;">
+      <path class="state" id="NSW" d="M400,400 L430,370 L470,390 L450,430 Z" />
+      <path class="state" id="VIC" d="M430,430 L470,450 L460,490 L420,470 Z" />
+      <path class="state" id="QLD" d="M400,300 L450,270 L480,310 L430,350 Z" />
+      <path class="state" id="SA" d="M350,370 L380,330 L400,370 L370,410 Z" />
+      <path class="state" id="WA" d="M200,300 L250,270 L270,310 L230,350 Z" />
+      <path class="state" id="TAS" d="M460,520 L470,540 L450,540 Z" />
+      <path class="state" id="NT" d="M300,250 L340,230 L360,270 L320,290 Z" />
+      <path class="state" id="ACT" d="M440,410 L445,405 L450,410 L445,415 Z" />
+    </svg>
+  </div>
+
+  <div class="site-list" id="siteList"></div>
+
+  <script>
+    const siteData = [{"Site": "Adelaide Parcel Facility", "State": "SA", "Postcode": 5037, "Booking Link": "https://book.nookal.com/bookings/book/2B6Eb6DD-4eB5-D3b7-96d2-692BfCAAd95e/location/VZTLF"}, {"Site": "Adelaide Letters Facility", "State": "SA", "Postcode": 5037, "Booking Link": "https://book.nookal.com/bookings/book/2B6Eb6DD-4eB5-D3b7-96d2-692BfCAAd95e/location/UFVEV"}, {"Site": "Wingfield", "State": "SA", "Postcode": 5013, "Booking Link": "https://book.nookal.com/bookings/book/2B6Eb6DD-4eB5-D3b7-96d2-692BfCAAd95e/location/VCNUJ"}, {"Site": "Camden Park", "State": "SA", "Postcode": 5038, "Booking Link": "https://book.nookal.com/bookings/book/2B6Eb6DD-4eB5-D3b7-96d2-692BfCAAd95e/location/GJZLN"}, {"Site": "Transport SA", "State": "SA", "Postcode": 5031, "Booking Link": "https://book.nookal.com/bookings/book/2B6Eb6DD-4eB5-D3b7-96d2-692BfCAAd95e/location/ZGMMJ"}, {"Site": "Salisbury South DC", "State": "SA", "Postcode": 5106, "Booking Link": "https://book.nookal.com/bookings/book/2B6Eb6DD-4eB5-D3b7-96d2-692BfCAAd95e/location/TMXFD"}, {"Site": "Glynde DC", "State": "SA", "Postcode": 5070, "Booking Link": "https://book.nookal.com/bookings/book/2B6Eb6DD-4eB5-D3b7-96d2-692BfCAAd95e/location/BUKEA"}, {"Site": "Port Adelaide DC", "State": "SA", "Postcode": 5015, "Booking Link": "https://book.nookal.com/bookings/book/2B6Eb6DD-4eB5-D3b7-96d2-692BfCAAd95e/location/VQVSQ"}, {"Site": "Modbury North DC", "State": "SA", "Postcode": 5092, "Booking Link": "https://book.nookal.com/bookings/book/2B6Eb6DD-4eB5-D3b7-96d2-692BfCAAd95e/location/PJTYS"}, {"Site": "Kent Town DC", "State": "SA", "Postcode": 5067, "Booking Link": "https://book.nookal.com/bookings/book/2B6Eb6DD-4eB5-D3b7-96d2-692BfCAAd95e/location/RPHYT"}, {"Site": "City Delivery Centre", "State": "SA", "Postcode": 5000, "Booking Link": "https://book.nookal.com/bookings/book/2B6Eb6DD-4eB5-D3b7-96d2-692BfCAAd95e/location/TYCYS"}, {"Site": "Edinburgh North DC", "State": "SA", "Postcode": 5113, "Booking Link": "https://book.nookal.com/bookings/book/2B6Eb6DD-4eB5-D3b7-96d2-692BfCAAd95e/location/HYRLS"}, {"Site": "Regency Park DC", "State": "SA", "Postcode": 5010, "Booking Link": "https://book.nookal.com/bookings/book/2B6Eb6DD-4eB5-D3b7-96d2-692BfCAAd95e/location/KMXAD"}, {"Site": "Lonsdale DC", "State": "SA", "Postcode": 5160, "Booking Link": "https://book.nookal.com/bookings/book/2B6Eb6DD-4eB5-D3b7-96d2-692BfCAAd95e/location/FMKPA"}, {"Site": "Mornington Hobart", "State": "TAS", "Postcode": 7018, "Booking Link": "https://book.nookal.com/bookings/book/2B6Eb6DD-4eB5-D3b7-96d2-692BfCAAd95e/location/BTXTJ"}, {"Site": "LPC St Leonards", "State": "TAS", "Postcode": 7009, "Booking Link": "https://book.nookal.com/bookings/book/2B6Eb6DD-4eB5-D3b7-96d2-692BfCAAd95e/location/ZKJGA"}, {"Site": "Launceston DC", "State": "TAS", "Postcode": 7250, "Booking Link": "https://book.nookal.com/bookings/book/2B6Eb6DD-4eB5-D3b7-96d2-692BfCAAd95e/location/AYMHM"}, {"Site": "Western Shore", "State": "TAS", "Postcode": 7250, "Booking Link": "https://book.nookal.com/bookings/book/2B6Eb6DD-4eB5-D3b7-96d2-692BfCAAd95e/location/KGFLY"}, {"Site": "DLC", "State": "VIC", "Postcode": 3175, "Booking Link": "https://book.nookal.com/bookings/book/2B6Eb6DD-4eB5-D3b7-96d2-692BfCAAd95e/location/MZKKS"}, {"Site": "Melboure Parcel Facility", "State": "VIC", "Postcode": 3020, "Booking Link": "https://book.nookal.com/bookings/book/2B6Eb6DD-4eB5-D3b7-96d2-692BfCAAd95e/location/AXQWP"}, {"Site": "Sunshine West", "State": "VIC", "Postcode": 3020, "Booking Link": "https://book.nookal.com/bookings/book/2B6Eb6DD-4eB5-D3b7-96d2-692BfCAAd95e/location/XRHFB"}, {"Site": "Annandale Rd Freight", "State": "VIC", "Postcode": 3043, "Booking Link": "https://book.nookal.com/bookings/book/2B6Eb6DD-4eB5-D3b7-96d2-692BfCAAd95e/location/KVTPR"}, {"Site": "MSE", "State": "VIC", "Postcode": 3175, "Booking Link": "https://book.nookal.com/bookings/book/2B6Eb6DD-4eB5-D3b7-96d2-692BfCAAd95e/location/BACEV"}, {"Site": "DTF", "State": "VIC", "Postcode": 3175, "Booking Link": "https://book.nookal.com/bookings/book/2B6Eb6DD-4eB5-D3b7-96d2-692BfCAAd95e/location/SBFPC"}, {"Site": "TPF", "State": "VIC", "Postcode": 3043, "Booking Link": "https://book.nookal.com/bookings/book/2B6Eb6DD-4eB5-D3b7-96d2-692BfCAAd95e/location/YDCSW"}, {"Site": "Avalon", "State": "VIC", "Postcode": 3212, "Booking Link": "https://book.nookal.com/bookings/book/2B6Eb6DD-4eB5-D3b7-96d2-692BfCAAd95e/location/WMDKF"}, {"Site": "Annandale Rd Fleet", "State": "VIC", "Postcode": 3043, "Booking Link": "https://book.nookal.com/bookings/book/2B6Eb6DD-4eB5-D3b7-96d2-692BfCAAd95e/location/DMEPU"}, {"Site": "MGF", "State": "VIC", "Postcode": 3045, "Booking Link": "https://book.nookal.com/bookings/book/2B6Eb6DD-4eB5-D3b7-96d2-692BfCAAd95e/location/XCGNW"}, {"Site": "Melbourne North Somerton", "State": "VIC", "Postcode": 3062, "Booking Link": "https://book.nookal.com/bookings/book/2B6Eb6DD-4eB5-D3b7-96d2-692BfCAAd95e/location/QCPHH"}, {"Site": "Bayswater PDC", "State": "VIC", "Postcode": 3152, "Booking Link": "https://book.nookal.com/bookings/book/2B6Eb6DD-4eB5-D3b7-96d2-692BfCAAd95e/location/KULLD"}, {"Site": "Sharps Rd Premium", "State": "VIC", "Postcode": 3043, "Booking Link": "https://book.nookal.com/bookings/book/2B6Eb6DD-4eB5-D3b7-96d2-692BfCAAd95e/location/EHARY"}, {"Site": "MTF", "State": "VIC", "Postcode": 3020, "Booking Link": "https://book.nookal.com/bookings/book/2B6Eb6DD-4eB5-D3b7-96d2-692BfCAAd95e/location/KVKPE"}, {"Site": "Airport West DC", "State": "VIC", "Postcode": 3041, "Booking Link": "https://book.nookal.com/bookings/book/2B6Eb6DD-4eB5-D3b7-96d2-692BfCAAd95e/location/MNJBM"}, {"Site": "Mulgrave ST", "State": "VIC", "Postcode": 3170, "Booking Link": "https://book.nookal.com/bookings/book/2B6Eb6DD-4eB5-D3b7-96d2-692BfCAAd95e/location/ZNWJW"}, {"Site": "Nunawading DC", "State": "VIC", "Postcode": 3170, "Booking Link": "https://book.nookal.com/bookings/book/2B6Eb6DD-4eB5-D3b7-96d2-692BfCAAd95e/location/DKGMN"}, {"Site": "North Melbourne DC", "State": "VIC", "Postcode": 3051, "Booking Link": "https://book.nookal.com/bookings/book/2B6Eb6DD-4eB5-D3b7-96d2-692BfCAAd95e/location/PVNWS"}, {"Site": "Mt Waverley", "State": "VIC", "Postcode": 3149, "Booking Link": "https://book.nookal.com/bookings/book/2B6Eb6DD-4eB5-D3b7-96d2-692BfCAAd95e/location/LUXVV"}, {"Site": "Geelong ST", "State": "VIC", "Postcode": 3212, "Booking Link": "https://book.nookal.com/bookings/book/2B6Eb6DD-4eB5-D3b7-96d2-692BfCAAd95e/location/FJJTH"}, {"Site": "PUD Oakleigh South", "State": "VIC", "Postcode": 3167, "Booking Link": "https://book.nookal.com/bookings/book/2B6Eb6DD-4eB5-D3b7-96d2-692BfCAAd95e/location/ZSADQ"}, {"Site": "Somerton DC", "State": "VIC", "Postcode": 3062, "Booking Link": "https://book.nookal.com/bookings/book/2B6Eb6DD-4eB5-D3b7-96d2-692BfCAAd95e/location/JTGKN"}, {"Site": "Preston DC", "State": "VIC", "Postcode": 3072, "Booking Link": "https://book.nookal.com/bookings/book/2B6Eb6DD-4eB5-D3b7-96d2-692BfCAAd95e/location/GKUTQ"}, {"Site": "BWM", "State": "WA", "Postcode": 6106, "Booking Link": "https://book.nookal.com/bookings/book/2B6Eb6DD-4eB5-D3b7-96d2-692BfCAAd95e/location/ARFBN"}, {"Site": "PMC", "State": "WA", "Postcode": 6105, "Booking Link": "https://book.nookal.com/bookings/book/2B6Eb6DD-4eB5-D3b7-96d2-692BfCAAd95e/location/NXXHN"}, {"Site": "ST Boud Ave", "State": "WA", "Postcode": 6105, "Booking Link": "https://book.nookal.com/bookings/book/2B6Eb6DD-4eB5-D3b7-96d2-692BfCAAd95e/location/VVYTG"}, {"Site": "Lee Close", "State": "WA", "Postcode": 6105, "Booking Link": "https://book.nookal.com/bookings/book/2B6Eb6DD-4eB5-D3b7-96d2-692BfCAAd95e/location/VTJVZ"}, {"Site": "Premium WA", "State": "WA", "Postcode": 6105, "Booking Link": "https://book.nookal.com/bookings/book/2B6Eb6DD-4eB5-D3b7-96d2-692BfCAAd95e/location/SGHEW"}, {"Site": "Transport WA", "State": "WA", "Postcode": 6105, "Booking Link": "https://book.nookal.com/bookings/book/2B6Eb6DD-4eB5-D3b7-96d2-692BfCAAd95e/location/KUHWF"}, {"Site": "Malaga DC", "State": "WA", "Postcode": 6090, "Booking Link": "https://book.nookal.com/bookings/book/2B6Eb6DD-4eB5-D3b7-96d2-692BfCAAd95e/location/DRWXD"}, {"Site": "Malaga PUD", "State": "WA", "Postcode": 6090, "Booking Link": "https://book.nookal.com/bookings/book/2B6Eb6DD-4eB5-D3b7-96d2-692BfCAAd95e/location/QRSJX"}, {"Site": "BWM Vans", "State": "WA", "Postcode": 6106, "Booking Link": "https://book.nookal.com/bookings/book/2B6Eb6DD-4eB5-D3b7-96d2-692BfCAAd95e/location/AAPSA"}, {"Site": "Wangara DC", "State": "WA", "Postcode": 6065, "Booking Link": "https://book.nookal.com/bookings/book/2B6Eb6DD-4eB5-D3b7-96d2-692BfCAAd95e/location/RBFZK"}, {"Site": "Canningvale DC", "State": "WA", "Postcode": 6155, "Booking Link": "https://book.nookal.com/bookings/book/2B6Eb6DD-4eB5-D3b7-96d2-692BfCAAd95e/location/PFEYJ"}, {"Site": "Kelmscott DC", "State": "WA", "Postcode": 6111, "Booking Link": "https://book.nookal.com/bookings/book/2B6Eb6DD-4eB5-D3b7-96d2-692BfCAAd95e/location/NANTM"}, {"Site": "Welshpool DC", "State": "WA", "Postcode": 6106, "Booking Link": "https://book.nookal.com/bookings/book/2B6Eb6DD-4eB5-D3b7-96d2-692BfCAAd95e/location/VUJRJ"}, {"Site": "Gwelup DC", "State": "WA", "Postcode": 6018, "Booking Link": "https://book.nookal.com/bookings/book/2B6Eb6DD-4eB5-D3b7-96d2-692BfCAAd95e/location/MBBRE"}, {"Site": "Nedlands DC", "State": "WA", "Postcode": 6009, "Booking Link": "https://book.nookal.com/bookings/book/2B6Eb6DD-4eB5-D3b7-96d2-692BfCAAd95e/location/JKZTZ"}, {"Site": "Bassendean DC", "State": "WA", "Postcode": 6054, "Booking Link": "https://book.nookal.com/bookings/book/2B6Eb6DD-4eB5-D3b7-96d2-692BfCAAd95e/location/MZWGA"}, {"Site": "Joondalup DC", "State": "WA", "Postcode": 6027, "Booking Link": "https://book.nookal.com/bookings/book/2B6Eb6DD-4eB5-D3b7-96d2-692BfCAAd95e/location/SUTWD"}, {"Site": "Bentley DC", "State": "WA", "Postcode": 6102, "Booking Link": "https://book.nookal.com/bookings/book/2B6Eb6DD-4eB5-D3b7-96d2-692BfCAAd95e/location/NMVEF"}, {"Site": "Butler DC", "State": "WA", "Postcode": 6036, "Booking Link": "https://book.nookal.com/bookings/book/2B6Eb6DD-4eB5-D3b7-96d2-692BfCAAd95e/location/CXNKD"}, {"Site": "City DC", "State": "WA", "Postcode": 6000, "Booking Link": "https://book.nookal.com/bookings/book/2B6Eb6DD-4eB5-D3b7-96d2-692BfCAAd95e/location/GBJBE"}, {"Site": "Palmyra DC", "State": "WA", "Postcode": 6157, "Booking Link": "https://book.nookal.com/bookings/book/2B6Eb6DD-4eB5-D3b7-96d2-692BfCAAd95e/location/VFZVC"}, {"Site": "Bibra Lake PUD", "State": "WA", "Postcode": 6164, "Booking Link": "https://book.nookal.com/bookings/book/2B6Eb6DD-4eB5-D3b7-96d2-692BfCAAd95e/location/UZLGT"}, {"Site": "Midland DC", "State": "WA", "Postcode": 6056, "Booking Link": "https://book.nookal.com/bookings/book/2B6Eb6DD-4eB5-D3b7-96d2-692BfCAAd95e/location/DFYQK"}, {"Site": "Osbourne Park DC", "State": "WA", "Postcode": 6017, "Booking Link": "https://book.nookal.com/bookings/book/2B6Eb6DD-4eB5-D3b7-96d2-692BfCAAd95e/location/ACLRB"}, {"Site": "Rockingham DC", "State": "WA", "Postcode": 6168, "Booking Link": "https://book.nookal.com/bookings/book/2B6Eb6DD-4eB5-D3b7-96d2-692BfCAAd95e/location/XXWGQ"}, {"Site": "Mandurah DC", "State": "WA", "Postcode": 6210, "Booking Link": "https://book.nookal.com/bookings/book/2B6Eb6DD-4eB5-D3b7-96d2-692BfCAAd95e/location/PCEBM"}, {"Site": "Bibra Lake DC", "State": "WA", "Postcode": 6164, "Booking Link": "https://book.nookal.com/bookings/book/2B6Eb6DD-4eB5-D3b7-96d2-692BfCAAd95e/location/LLTEQ"}, {"Site": "Walliston DC", "State": "WA", "Postcode": 6076, "Booking Link": "https://book.nookal.com/bookings/book/2B6Eb6DD-4eB5-D3b7-96d2-692BfCAAd95e/location/EGVPL"}, {"Site": "Ellenbrook Annexe", "State": "WA", "Postcode": 6069, "Booking Link": "https://book.nookal.com/bookings/book/2B6Eb6DD-4eB5-D3b7-96d2-692BfCAAd95e/location/SXFQL"}, {"Site": "BPF Processing", "State": "QLD", "Postcode": 4301, "Booking Link": "https://book.nookal.com/bookings/book/2B6Eb6DD-4eB5-D3b7-96d2-692BfCAAd95e/location/USKWU"}, {"Site": "BPF PUD", "State": "QLD", "Postcode": 4301, "Booking Link": "https://book.nookal.com/bookings/book/2B6Eb6DD-4eB5-D3b7-96d2-692BfCAAd95e/location/ZPCCB"}, {"Site": "BPF Transport", "State": "QLD", "Postcode": 4301, "Booking Link": "https://book.nookal.com/bookings/book/2B6Eb6DD-4eB5-D3b7-96d2-692BfCAAd95e/location/KAJEG"}, {"Site": "Brisbane Gateway\u00a0", "State": "QLD", "Postcode": 4008, "Booking Link": "https://book.nookal.com/bookings/book/2B6Eb6DD-4eB5-D3b7-96d2-692BfCAAd95e/location/PMMTE"}, {"Site": "Brendale/ Clontarf", "State": "QLD", "Postcode": 4500, "Booking Link": "https://book.nookal.com/bookings/book/2B6Eb6DD-4eB5-D3b7-96d2-692BfCAAd95e/location/FFLVH"}, {"Site": "Bundamba DC", "State": "QLD", "Postcode": 4304, "Booking Link": "https://book.nookal.com/bookings/book/2B6Eb6DD-4eB5-D3b7-96d2-692BfCAAd95e/location/VQEEA"}, {"Site": "Capalaba DC\u00a0", "State": "QLD", "Postcode": 4157, "Booking Link": "https://book.nookal.com/bookings/book/2B6Eb6DD-4eB5-D3b7-96d2-692BfCAAd95e/location/VLUYE"}, {"Site": "Coorparoo", "State": "QLD", "Postcode": 4151, "Booking Link": "https://book.nookal.com/bookings/book/2B6Eb6DD-4eB5-D3b7-96d2-692BfCAAd95e/location/RBWKT"}, {"Site": "Creastemad DC", "State": "QLD", "Postcode": 4132, "Booking Link": "https://book.nookal.com/bookings/book/2B6Eb6DD-4eB5-D3b7-96d2-692BfCAAd95e/location/BGUMR"}, {"Site": "Dara DC", "State": "QLD", "Postcode": 4076, "Booking Link": "https://book.nookal.com/bookings/book/2B6Eb6DD-4eB5-D3b7-96d2-692BfCAAd95e/location/PNUXB"}, {"Site": "Darra ST", "State": "QLD", "Postcode": 4076, "Booking Link": "https://book.nookal.com/bookings/book/2B6Eb6DD-4eB5-D3b7-96d2-692BfCAAd95e/location/VEKNV"}, {"Site": "Ferny Hills DC", "State": "QLD", "Postcode": 4055, "Booking Link": "https://book.nookal.com/bookings/book/2B6Eb6DD-4eB5-D3b7-96d2-692BfCAAd95e/location/PNGTJ"}, {"Site": "GC parcel facility", "State": "QLD", "Postcode": 4214, "Booking Link": "https://book.nookal.com/bookings/book/2B6Eb6DD-4eB5-D3b7-96d2-692BfCAAd95e/location/PYZTN"}, {"Site": "Mansfield DC", "State": "QLD", "Postcode": 4122, "Booking Link": "https://book.nookal.com/bookings/book/2B6Eb6DD-4eB5-D3b7-96d2-692BfCAAd95e/location/XCFGL"}, {"Site": "Murarrie PUD", "State": "QLD", "Postcode": 4172, "Booking Link": "https://book.nookal.com/bookings/book/2B6Eb6DD-4eB5-D3b7-96d2-692BfCAAd95e/location/TCAJN"}, {"Site": "Northgate Mail", "State": "QLD", "Postcode": 4013, "Booking Link": "https://book.nookal.com/bookings/book/2B6Eb6DD-4eB5-D3b7-96d2-692BfCAAd95e/location/AZDFR"}, {"Site": "Northgate Transport", "State": "QLD", "Postcode": 4013, "Booking Link": "https://book.nookal.com/bookings/book/2B6Eb6DD-4eB5-D3b7-96d2-692BfCAAd95e/location/FUCEW"}, {"Site": "Pinkenba PUD", "State": "QLD", "Postcode": 4008, "Booking Link": "https://book.nookal.com/bookings/book/2B6Eb6DD-4eB5-D3b7-96d2-692BfCAAd95e/location/BQXBZ"}, {"Site": "ST Premium", "State": "QLD", "Postcode": 4008, "Booking Link": "https://book.nookal.com/bookings/book/2B6Eb6DD-4eB5-D3b7-96d2-692BfCAAd95e/location/RUQUJ"}, {"Site": "Stafford DC", "State": "QLD", "Postcode": 4053, "Booking Link": "https://book.nookal.com/bookings/book/2B6Eb6DD-4eB5-D3b7-96d2-692BfCAAd95e/location/ZXTRW"}, {"Site": "ST Yandina:\u00a0", "State": "QLD", "Postcode": 4561, "Booking Link": "https://book.nookal.com/bookings/book/2B6Eb6DD-4eB5-D3b7-96d2-692BfCAAd95e/location/LWZWX"}, {"Site": "Tingalpa DC\u00a0", "State": "QLD", "Postcode": 4173, "Booking Link": "https://book.nookal.com/bookings/book/2B6Eb6DD-4eB5-D3b7-96d2-692BfCAAd95e/location/LFFXM"}, {"Site": "Virginia DC", "State": "QLD", "Postcode": 4014, "Booking Link": "https://book.nookal.com/bookings/book/2B6Eb6DD-4eB5-D3b7-96d2-692BfCAAd95e/location/DVJHZ"}, {"Site": "ST Westringia", "State": "QLD", "Postcode": 4008, "Booking Link": "https://book.nookal.com/bookings/book/2B6Eb6DD-4eB5-D3b7-96d2-692BfCAAd95e/location/RJGUE"}, {"Site": "KCPF", "State": "NSW", "Postcode": 2178, "Booking Link": "https://book.nookal.com/bookings/book/2B6Eb6DD-4eB5-D3b7-96d2-692BfCAAd95e/location/BFETQ"}, {"Site": "KCPF PUD", "State": "NSW", "Postcode": 2178, "Booking Link": "https://book.nookal.com/bookings/book/2B6Eb6DD-4eB5-D3b7-96d2-692BfCAAd95e/location/ATWXD"}, {"Site": "SWLF", "State": "NSW", "Postcode": 2135, "Booking Link": "https://book.nookal.com/bookings/book/2B6Eb6DD-4eB5-D3b7-96d2-692BfCAAd95e/location/GQJTL"}, {"Site": "Sydney Gateway Facility\u00a0", "State": "NSW", "Postcode": 2142, "Booking Link": "https://book.nookal.com/bookings/book/2B6Eb6DD-4eB5-D3b7-96d2-692BfCAAd95e/location/QGKJV"}, {"Site": "Hunter Transport", "State": "NSW", "Postcode": 2304, "Booking Link": "https://book.nookal.com/bookings/book/2B6Eb6DD-4eB5-D3b7-96d2-692BfCAAd95e/location/ZPRJZ"}, {"Site": "Hunter Vans (Newcastle PUD)", "State": "NSW", "Postcode": 2304, "Booking Link": "https://book.nookal.com/bookings/book/2B6Eb6DD-4eB5-D3b7-96d2-692BfCAAd95e/location/TRWFA"}, {"Site": "Newcastle Mail Centre", "State": "NSW", "Postcode": 2304, "Booking Link": "https://book.nookal.com/bookings/book/2B6Eb6DD-4eB5-D3b7-96d2-692BfCAAd95e/location/UTXZN"}, {"Site": "Newcastle ST Express", "State": "NSW", "Postcode": 2285, "Booking Link": "https://book.nookal.com/bookings/book/2B6Eb6DD-4eB5-D3b7-96d2-692BfCAAd95e/location/JGXMZ"}, {"Site": "Alexandria Delivery", "State": "NSW", "Postcode": 2015, "Booking Link": "https://book.nookal.com/bookings/book/2B6Eb6DD-4eB5-D3b7-96d2-692BfCAAd95e/location/EHRVZ"}, {"Site": "Alex Processing", "State": "NSW", "Postcode": 2015, "Booking Link": "https://book.nookal.com/bookings/book/2B6Eb6DD-4eB5-D3b7-96d2-692BfCAAd95e/location/SZRZN"}, {"Site": "Alexandria PUD", "State": "NSW", "Postcode": 2015, "Booking Link": "https://book.nookal.com/bookings/book/2B6Eb6DD-4eB5-D3b7-96d2-692BfCAAd95e/location/WXNNC"}, {"Site": "Botany PDC", "State": "NSW", "Postcode": 2019, "Booking Link": "https://book.nookal.com/bookings/book/2B6Eb6DD-4eB5-D3b7-96d2-692BfCAAd95e/location/LCSMV"}, {"Site": "Chullora ST Express", "State": "NSW", "Postcode": 2190, "Booking Link": "https://book.nookal.com/bookings/book/2B6Eb6DD-4eB5-D3b7-96d2-692BfCAAd95e/location/YBANP"}, {"Site": "Edgeworth DC", "State": "NSW", "Postcode": 2285, "Booking Link": "https://book.nookal.com/bookings/book/2B6Eb6DD-4eB5-D3b7-96d2-692BfCAAd95e/location/LULAU"}, {"Site": "Greenacre Premium", "State": "NSW", "Postcode": 2190, "Booking Link": "https://book.nookal.com/bookings/book/2B6Eb6DD-4eB5-D3b7-96d2-692BfCAAd95e/location/SGMXD"}, {"Site": "Ingleburn/Narellan", "State": "NSW", "Postcode": 2565, "Booking Link": "https://book.nookal.com/bookings/book/2B6Eb6DD-4eB5-D3b7-96d2-692BfCAAd95e/location/GWNAG"}, {"Site": "Beresfield (Metford DC)", "State": "NSW", "Postcode": 2322, "Booking Link": "https://book.nookal.com/bookings/book/2B6Eb6DD-4eB5-D3b7-96d2-692BfCAAd95e/location/ZEDBG"}, {"Site": "Minchinbury ST Express", "State": "NSW", "Postcode": 2770, "Booking Link": "https://book.nookal.com/bookings/book/2B6Eb6DD-4eB5-D3b7-96d2-692BfCAAd95e/location/XKYZJ"}, {"Site": "Nepean DF", "State": "NSW", "Postcode": 2750, "Booking Link": "https://book.nookal.com/bookings/book/2B6Eb6DD-4eB5-D3b7-96d2-692BfCAAd95e/location/KJCQZ"}, {"Site": "Seven Hills DF", "State": "NSW", "Postcode": 2147, "Booking Link": "https://book.nookal.com/bookings/book/2B6Eb6DD-4eB5-D3b7-96d2-692BfCAAd95e/location/YNUSY"}, {"Site": "Seven Hills PUD", "State": "NSW", "Postcode": 2147, "Booking Link": "https://book.nookal.com/bookings/book/2B6Eb6DD-4eB5-D3b7-96d2-692BfCAAd95e/location/KJPRY"}, {"Site": "SPF (Sydney Parcel Facility)", "State": "NSW", "Postcode": 2190, "Booking Link": "https://book.nookal.com/bookings/book/2B6Eb6DD-4eB5-D3b7-96d2-692BfCAAd95e/location/JRWPY"}, {"Site": "St Leonards DF", "State": "NSW", "Postcode": 2065, "Booking Link": "https://book.nookal.com/bookings/book/2B6Eb6DD-4eB5-D3b7-96d2-692BfCAAd95e/location/WVFAF"}, {"Site": "Strathfield DF", "State": "NSW", "Postcode": 2135, "Booking Link": "https://book.nookal.com/bookings/book/2B6Eb6DD-4eB5-D3b7-96d2-692BfCAAd95e/location/FXGPG"}, {"Site": "Sydney Transport Facility", "State": "NSW", "Postcode": 2190, "Booking Link": "https://book.nookal.com/bookings/book/2B6Eb6DD-4eB5-D3b7-96d2-692BfCAAd95e/location/NUPGH"}, {"Site": "Warabrook DC", "State": "NSW", "Postcode": 2304, "Booking Link": "https://book.nookal.com/bookings/book/2B6Eb6DD-4eB5-D3b7-96d2-692BfCAAd95e/location/HBCKV"}, {"Site": "Belconnen DC", "State": "ACT", "Postcode": 2617, "Booking Link": "https://book.nookal.com/bookings/book/2B6Eb6DD-4eB5-D3b7-96d2-692BfCAAd95e/location/MEXTJ"}, {"Site": "Canberra Processing", "State": "ACT", "Postcode": 2610, "Booking Link": "https://book.nookal.com/bookings/book/2B6Eb6DD-4eB5-D3b7-96d2-692BfCAAd95e/location/KBVPN"}, {"Site": "Canberra South DF", "State": "ACT", "Postcode": 2610, "Booking Link": "https://book.nookal.com/bookings/book/2B6Eb6DD-4eB5-D3b7-96d2-692BfCAAd95e/location/MPBME"}, {"Site": "Canberra Startrack", "State": "ACT", "Postcode": 2620, "Booking Link": "https://book.nookal.com/bookings/book/2B6Eb6DD-4eB5-D3b7-96d2-692BfCAAd95e/location/CWHAL"}, {"Site": "Canberra Vans North", "State": "ACT", "Postcode": 2911, "Booking Link": "https://book.nookal.com/bookings/book/2B6Eb6DD-4eB5-D3b7-96d2-692BfCAAd95e/location/CSVGH"}, {"Site": "Canberra Vans South", "State": "ACT", "Postcode": 2609, "Booking Link": "https://book.nookal.com/bookings/book/2B6Eb6DD-4eB5-D3b7-96d2-692BfCAAd95e/location/TZHLG"}, {"Site": "Fyshwick PDC", "State": "ACT", "Postcode": 2609, "Booking Link": "https://book.nookal.com/bookings/book/2B6Eb6DD-4eB5-D3b7-96d2-692BfCAAd95e/location/RPCNK"}, {"Site": "Mitchell DF", "State": "ACT", "Postcode": 2911, "Booking Link": "https://book.nookal.com/bookings/book/2B6Eb6DD-4eB5-D3b7-96d2-692BfCAAd95e/location/MXHDR"}, {"Site": "Tuggeranong DC", "State": "ACT", "Postcode": 2901, "Booking Link": "https://book.nookal.com/bookings/book/2B6Eb6DD-4eB5-D3b7-96d2-692BfCAAd95e/location/MQUWE"}];
+
+    const searchInput = document.getElementById('search');
+    const siteList = document.getElementById('siteList');
+    const states = document.querySelectorAll('.state');
+
+    function renderSites(filtered) {
+      siteList.innerHTML = "";
+      if (filtered.length === 0) {
+        siteList.innerHTML = "<p>No results found.</p>";
+        return;
+      }
+      filtered.forEach(site => {
+        const div = document.createElement("div");
+        div.className = "site";
+        div.innerHTML = `
+          <h3>${site.Site}</h3>
+          <p><strong>State:</strong> ${site.State}</p>
+          <p><strong>Postcode:</strong> ${site.Postcode}</p>
+          <a href="${site["Booking Link"]}" target="_blank">Book Now</a>
+        `;
+        siteList.appendChild(div);
+      });
+    }
+
+    function filterSites(term) {
+      const keyword = term.trim().toLowerCase();
+      const filtered = siteData.filter(site =>
+        site.Site.toLowerCase().includes(keyword) ||
+        site.State.toLowerCase().includes(keyword) ||
+        site.Postcode.toString().includes(keyword)
+      );
+      renderSites(filtered);
+    }
+
+    searchInput.addEventListener("input", e => {
+      filterSites(e.target.value);
+    });
+
+    states.forEach(state => {
+      state.addEventListener("click", () => {
+        const stateName = state.id;
+        searchInput.value = stateName;
+        filterSites(stateName);
+      });
+    });
+
+    renderSites(siteData);
+  </script>
+</body>
+</html>
