@@ -1,72 +1,113 @@
-<!DOCTYPE html>
 
+<!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8"/>
-<title>Book an Appointment</title>
-<style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>APG Booking Portal</title>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
+  <style>
     body {
-      font-family: Arial, sans-serif;
-      background: #f9fbfb;
-      margin: 0;
+      font-family: 'Montserrat', sans-serif;
+      background: #f8f9fa;
+      color: #2D2A26;
       padding: 20px;
-      text-align: center;
+      margin: 0;
     }
-    input {
-      padding: 10px;
-      width: 300px;
-      font-size: 16px;
+    header {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      padding-bottom: 20px;
+    }
+    header img {
+      max-height: 60px;
+      margin-bottom: 10px;
+    }
+    h1 {
+      color: #00677F;
+      text-align: center;
       margin-bottom: 20px;
     }
-    svg {
-      width: 80%;
-      height: auto;
-      max-width: 900px;
-      margin: auto;
+    #search {
+      width: 100%;
+      max-width: 500px;
+      margin: 0 auto 20px auto;
+      padding: 10px;
+      font-size: 16px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
       display: block;
     }
-    path {
-      cursor: pointer;
-      transition: fill 0.2s;
+    .map-container {
+      max-width: 800px;
+      margin: 0 auto 30px auto;
+      text-align: center;
     }
-    path:hover {
-      fill: #4f7760;
+    svg path.state {
+      fill: #ccc;
+      stroke: #666;
+      stroke-width: 1;
+      cursor: pointer;
+      transition: fill 0.3s ease, transform 0.2s ease;
+    }
+    svg path.state:hover {
+      fill: #00A9CE;
+      transform: scale(1.02);
+    }
+    svg path.state.selected {
+      fill: #00677F;
+    }
+    .site {
+      background: white;
+      border-left: 5px solid #00A9CE;
+      border-radius: 6px;
+      padding: 15px;
+      margin-bottom: 12px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    }
+    .site h2 {
+      margin: 0 0 5px;
+      color: #00677F;
+    }
+    .site p {
+      margin: 0 0 10px;
+      color: #75787B;
+    }
+    .site a {
+      text-decoration: none;
+      color: white;
+      background: #00A9CE;
+      padding: 8px 12px;
+      border-radius: 4px;
+    }
+    .site a:hover {
+      background: #00677F;
     }
   </style>
 </head>
 <body>
-<h1>Book an Appointment</h1>
-<input id="searchInput" placeholder="Search by site name, suburb or postcode..." type="text"/>
-<div id="map-container">
-<?xml version="1.0"?>
-<!--********* Copyright (c) 2024 Pareto Softare, LLC DBA Simplemaps.com ***************************************
-************* Free for Commercial Use, full terms at  https://simplemaps.com/resources/svg-license ************
-************* Attribution is appreciated! https://simplemaps.com *******************************************-->
-
-</div>
-<script>
-    const searchInput = document.getElementById('searchInput');
-    const stateNames = {
-      WA: 'Western Australia',
-      NT: 'Northern Territory',
-      SA: 'South Australia',
-      QLD: 'Queensland',
-      NSW: 'New South Wales',
-      VIC: 'Victoria',
-      TAS: 'Tasmania',
-      ACT: 'Australian Capital Territory'
-    };
-
-    Object.keys(stateNames).forEach(code => {
-      const el = document.getElementById(code);
-      if (el) {
-        el.addEventListener('click', () => {
-          searchInput.value = stateNames[code];
-          const inputEvent = new Event('input');
-          searchInput.dispatchEvent(inputEvent);
-        });
-      }
-    });
-  </script>
+  <header>
+    <img src="emp_white_rgb.jpg" alt="EMP Logo" />
+    <h1>Book an Appointment</h1>
+  </header>
+  <input type="text" id="search" placeholder="Search by site name, suburb or postcode..." />
+  <div class="map-container">
+    <!-- Real SVG map of Australia -->
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 850" width="100%" height="auto">
+      <g fill="#ccc" stroke="#666" stroke-width="1">
+        <path id="WA" class="state" d="M100,300 L180,200 L260,210 L240,400 L150,420 Z" />
+        <path id="NT" class="state" d="M260,210 L380,200 L390,310 L270,320 Z" />
+        <path id="SA" class="state" d="M240,400 L270,320 L390,310 L400,410 L270,440 Z" />
+        <path id="QLD" class="state" d="M390,200 L520,220 L500,360 L400,370 L390,310 Z" />
+        <path id="NSW" class="state" d="M400,410 L500,390 L510,500 L390,490 Z" />
+        <path id="VIC" class="state" d="M390,500 L510,500 L490,560 L380,550 Z" />
+        <path id="TAS" class="state" d="M460,640 L480,660 L460,680 L440,660 Z" />
+      </g>
+    </svg>
+  </div>
+  <div id="results"></div>
+  <script src="script.js"></script>
 </body>
 </html>

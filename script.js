@@ -1,4 +1,3 @@
-
 let allSites = [];
 
 fetch('locations.json')
@@ -6,7 +5,7 @@ fetch('locations.json')
   .then(data => {
     allSites = data;
     setupSearchAndMap();
-    displayResults(data); // show all on load
+    displayResults(data); // Show all sites on load
   });
 
 function setupSearchAndMap() {
@@ -26,11 +25,18 @@ function setupSearchAndMap() {
     displayResults(filtered);
   }
 
-  searchInput.addEventListener('input', filterSites);
+  // Search bar input filter
+  searchInput.addEventListener('input', () => {
+    // Clear active state if search text no longer matches
+    activeState = '';
+    filterSites();
+  });
 
+  // Map region click
   document.querySelectorAll('.state').forEach(region => {
     region.addEventListener('click', () => {
       activeState = region.id; // e.g. "NSW"
+      searchInput.value = activeState; // Inject state into search bar
       filterSites();
     });
   });
