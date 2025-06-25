@@ -41,23 +41,9 @@
       display: block;
     }
     .map-container {
-      max-width: 800px;
+      max-width: 900px;
       margin: 0 auto 30px auto;
       text-align: center;
-    }
-    svg path.state {
-      fill: #ccc;
-      stroke: #666;
-      stroke-width: 1;
-      cursor: pointer;
-      transition: fill 0.3s ease, transform 0.2s ease;
-    }
-    svg path.state:hover {
-      fill: #00A9CE;
-      transform: scale(1.02);
-    }
-    svg path.state.selected {
-      fill: #00677F;
     }
     .site {
       background: white;
@@ -92,22 +78,75 @@
     <img src="emp_white_rgb.jpg" alt="EMP Logo" />
     <h1>Book an Appointment</h1>
   </header>
+
   <input type="text" id="search" placeholder="Search by site name, suburb or postcode..." />
+
   <div class="map-container">
-    <!-- Real SVG map of Australia from Wikimedia (simplified version) -->
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 850" width="100%" height="auto">
-      <g fill="#ccc" stroke="#666" stroke-width="1">
-        <path id="WA" class="state" d="M100,300 L180,200 L260,210 L240,400 L150,420 Z" />
-        <path id="NT" class="state" d="M260,210 L380,200 L390,310 L270,320 Z" />
-        <path id="SA" class="state" d="M240,400 L270,320 L390,310 L400,410 L270,440 Z" />
-        <path id="QLD" class="state" d="M390,200 L520,220 L500,360 L400,370 L390,310 Z" />
-        <path id="NSW" class="state" d="M400,410 L500,390 L510,500 L390,490 Z" />
-        <path id="VIC" class="state" d="M390,500 L510,500 L490,560 L380,550 Z" />
-        <path id="TAS" class="state" d="M460,640 L480,660 L460,680 L440,660 Z" />
-      </g>
-    </svg>
+    <div id="map" style="width:100%; height:600px;"></div>
   </div>
+
   <div id="results"></div>
+
+  <script>
+    var simplemaps_countrymap_mapdata = {
+      main_settings: {
+        width: "responsive",
+        background_color: "#FFFFFF",
+        background_transparent: "yes",
+        border_color: "#ffffff",
+        state_color: "#00A9CE",
+        state_hover_color: "#00677F",
+        state_url: "",
+        border_size: 1.5,
+        all_states_inactive: "no",
+        all_states_zoomable: "yes",
+        div: "map",
+        auto_load: "yes"
+      },
+      state_specific: {
+        AUACT: { name: "Australian Capital Territory" },
+        AUNSW: { name: "New South Wales" },
+        AUNT: { name: "Northern Territory" },
+        AUQLD: { name: "Queensland" },
+        AUSA: { name: "South Australia" },
+        AUTAS: { name: "Tasmania" },
+        AUVIC: { name: "Victoria" },
+        AUWA: { name: "Western Australia" }
+      },
+      labels: {
+        AUACT: { name: "ACT", parent_id: "AUACT" },
+        AUNSW: { name: "NSW", parent_id: "AUNSW" },
+        AUNT: { name: "NT", parent_id: "AUNT" },
+        AUQLD: { name: "QLD", parent_id: "AUQLD" },
+        AUSA: { name: "SA", parent_id: "AUSA" },
+        AUTAS: { name: "TAS", parent_id: "AUTAS" },
+        AUVIC: { name: "VIC", parent_id: "AUVIC" },
+        AUWA: { name: "WA", parent_id: "AUWA" }
+      }
+    };
+
+    window.simplemaps_countrymap.hooks = {};
+    window.simplemaps_countrymap.hooks.state_click = function(id) {
+      const stateMap = {
+        AUNSW: "NSW",
+        AUQLD: "QLD",
+        AUVIC: "VIC",
+        AUWA: "WA",
+        AUSA: "SA",
+        AUNT: "NT",
+        AUTAS: "TAS",
+        AUACT: "ACT"
+      };
+      const readable = stateMap[id];
+      if (readable) {
+        const input = document.getElementById("search");
+        input.value = readable;
+        input.dispatchEvent(new Event("input"));
+      }
+    };
+  </script>
+
+  <script src="https://simplemaps.com/static/js/countrymap.js"></script>
   <script src="script.js"></script>
 </body>
 </html>
