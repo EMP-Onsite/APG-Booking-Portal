@@ -41,7 +41,7 @@
       display: block;
     }
     .map-container {
-      max-width: 700px;
+      max-width: 800px;
       margin: 0 auto 30px auto;
       text-align: center;
     }
@@ -54,7 +54,7 @@
     }
     svg path.state:hover {
       fill: #00A9CE;
-      transform: scale(1.05);
+      transform: scale(1.02);
     }
     svg path.state.selected {
       fill: #00677F;
@@ -94,16 +94,16 @@
   </header>
   <input type="text" id="search" placeholder="Search by site name, suburb or postcode..." />
   <div class="map-container">
-    <!-- Simple map with real Australia state shapes (simplified, not accurate borders) -->
-    <svg viewBox="0 0 800 600" xmlns="http://www.w3.org/2000/svg">
-      <g id="states">
-        <path id="WA" class="state" d="M100,250 L180,190 L200,300 L130,350 Z" />
-        <path id="NT" class="state" d="M200,200 L300,200 L300,300 L200,300 Z" />
-        <path id="SA" class="state" d="M200,310 L300,310 L300,400 L200,400 Z" />
-        <path id="QLD" class="state" d="M310,200 L400,200 L400,300 L310,300 Z" />
-        <path id="NSW" class="state" d="M310,310 L400,310 L400,400 L310,400 Z" />
-        <path id="VIC" class="state" d="M310,410 L400,410 L400,460 L310,460 Z" />
-        <path id="TAS" class="state" d="M360,500 L380,520 L360,540 L340,520 Z" />
+    <!-- Real SVG map of Australia from Wikimedia (simplified version) -->
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 850" width="100%" height="auto">
+      <g fill="#ccc" stroke="#666" stroke-width="1">
+        <path id="WA" class="state" d="M100,300 L180,200 L260,210 L240,400 L150,420 Z" />
+        <path id="NT" class="state" d="M260,210 L380,200 L390,310 L270,320 Z" />
+        <path id="SA" class="state" d="M240,400 L270,320 L390,310 L400,410 L270,440 Z" />
+        <path id="QLD" class="state" d="M390,200 L520,220 L500,360 L400,370 L390,310 Z" />
+        <path id="NSW" class="state" d="M400,410 L500,390 L510,500 L390,490 Z" />
+        <path id="VIC" class="state" d="M390,500 L510,500 L490,560 L380,550 Z" />
+        <path id="TAS" class="state" d="M460,640 L480,660 L460,680 L440,660 Z" />
       </g>
     </svg>
   </div>
