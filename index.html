@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -45,20 +44,6 @@
       margin: 0 auto 30px auto;
       text-align: center;
     }
-    svg path.state {
-      fill: #ccc;
-      stroke: #666;
-      stroke-width: 1;
-      cursor: pointer;
-      transition: fill 0.3s ease, transform 0.2s ease;
-    }
-    svg path.state:hover {
-      fill: #00A9CE;
-      transform: scale(1.02);
-    }
-    svg path.state.selected {
-      fill: #00677F;
-    }
     .site {
       background: white;
       border-left: 5px solid #00A9CE;
@@ -85,6 +70,20 @@
     .site a:hover {
       background: #00677F;
     }
+    .state {
+      fill: #ccc;
+      stroke: #666;
+      stroke-width: 1;
+      cursor: pointer;
+      transition: fill 0.3s ease, transform 0.2s ease;
+    }
+    .state:hover {
+      fill: #00A9CE;
+      transform: scale(1.02);
+    }
+    .state.selected {
+      fill: #00677F;
+    }
   </style>
 </head>
 <body>
@@ -92,22 +91,26 @@
     <img src="emp_white_rgb.jpg" alt="EMP Logo" />
     <h1>Book an Appointment</h1>
   </header>
+
   <input type="text" id="search" placeholder="Search by site name, suburb or postcode..." />
+
   <div class="map-container">
-    <!-- Real SVG map of Australia -->
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 850" width="100%" height="auto">
-      <g fill="#ccc" stroke="#666" stroke-width="1">
-        <path id="WA" class="state" d="M100,300 L180,200 L260,210 L240,400 L150,420 Z" />
-        <path id="NT" class="state" d="M260,210 L380,200 L390,310 L270,320 Z" />
-        <path id="SA" class="state" d="M240,400 L270,320 L390,310 L400,410 L270,440 Z" />
-        <path id="QLD" class="state" d="M390,200 L520,220 L500,360 L400,370 L390,310 Z" />
-        <path id="NSW" class="state" d="M400,410 L500,390 L510,500 L390,490 Z" />
-        <path id="VIC" class="state" d="M390,500 L510,500 L490,560 L380,550 Z" />
-        <path id="TAS" class="state" d="M460,640 L480,660 L460,680 L440,660 Z" />
+    <!-- Embedded updated SVG map of Australia -->
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1300 1100" width="100%" height="auto">
+      <g>
+        <path id="WA" class="state" d="..." /> <!-- Replace ... with actual WA path from SVG -->
+        <path id="NT" class="state" d="..." />
+        <path id="SA" class="state" d="..." />
+        <path id="QLD" class="state" d="..." />
+        <path id="NSW" class="state" d="..." />
+        <path id="VIC" class="state" d="..." />
+        <path id="TAS" class="state" d="..." />
       </g>
     </svg>
   </div>
+
   <div id="results"></div>
+
   <script src="script.js"></script>
 </body>
 </html>
