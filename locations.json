@@ -786,6 +786,12 @@
     "bookingUrl": "https://book.nookal.com/bookings/book/2B6Eb6DD-4eB5-D3b7-96d2-692BfCAAd95e/location/TMYNM"
   },
 {
+    "name": "Sunshine West PUD",
+    "state": "VIC",
+    "postcode": 3020,
+    "bookingUrl": "https://book.nookal.com/bookings/book/2B6Eb6DD-4eB5-D3b7-96d2-692BfCAAd95e/location/WGFRN"
+  },
+{
     "name": "North Ryde DC",
     "state": "NSW",
     "postcode": 2113,
