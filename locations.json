@@ -138,7 +138,7 @@
     "bookingUrl": "https://book.nookal.com/bookings/book/2B6Eb6DD-4eB5-D3b7-96d2-692BfCAAd95e/location/XRHFB"
   },
   {
-    "name": "Annandale Rd Freight",
+    "name": "Annandale Rd",
     "state": "VIC",
     "postcode": 3043,
     "bookingUrl": "https://book.nookal.com/bookings/book/2B6Eb6DD-4eB5-D3b7-96d2-692BfCAAd95e/location/KVTPR"
@@ -166,12 +166,6 @@
     "state": "VIC",
     "postcode": 3212,
     "bookingUrl": "https://book.nookal.com/bookings/book/2B6Eb6DD-4eB5-D3b7-96d2-692BfCAAd95e/location/WMDKF"
-  },
-  {
-    "name": "Annandale Rd Fleet",
-    "state": "VIC",
-    "postcode": 3043,
-    "bookingUrl": "https://book.nookal.com/bookings/book/2B6Eb6DD-4eB5-D3b7-96d2-692BfCAAd95e/location/DMEPU"
   },
   {
     "name": "MGF",
