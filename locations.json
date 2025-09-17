@@ -329,6 +329,36 @@
     "postcode": 6111,
     "bookingUrl": "https://book.nookal.com/bookings/book/2B6Eb6DD-4eB5-D3b7-96d2-692BfCAAd95e/location/NANTM"
   },
+{
+    "name": "Nerang DC",
+    "state": "QLD",
+    "postcode": 4211,
+    "bookingUrl": "https://book.nookal.com/bookings/book/2B6Eb6DD-4eB5-D3b7-96d2-692BfCAAd95e/location/SQJNJ"
+  },
+{
+    "name": "Arundel DC",
+    "state": "QLD",
+    "postcode": 4214,
+    "bookingUrl": "https://book.nookal.com/bookings/book/2B6Eb6DD-4eB5-D3b7-96d2-692BfCAAd95e/location/LYCQK"
+  },
+{
+    "name": "Bundall DC",
+    "state": "QLD",
+    "postcode": 4217,
+    "bookingUrl": "https://book.nookal.com/bookings/book/2B6Eb6DD-4eB5-D3b7-96d2-692BfCAAd95e/location/MRXGU"
+  },
+{
+    "name": "Yatala DA",
+    "state": "QLD",
+    "postcode": 4207,
+    "bookingUrl": "https://book.nookal.com/bookings/book/2B6Eb6DD-4eB5-D3b7-96d2-692BfCAAd95e/location/VPLUN"
+  },
+{
+    "name": "Logan City DC",
+    "state": "QLD",
+    "postcode": 4114,
+    "bookingUrl": "https://book.nookal.com/bookings/book/2B6Eb6DD-4eB5-D3b7-96d2-692BfCAAd95e/location/RFGSN"
+  },
   {
     "name": "Welshpool DC",
     "state": "WA",
