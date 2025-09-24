@@ -850,5 +850,11 @@
     "state": "NSW",
     "postcode": 2113,
     "bookingUrl": "https://book.nookal.com/bookings/book/2B6Eb6DD-4eB5-D3b7-96d2-692BfCAAd95e/location/CPDGR"
+  },
+  {
+    "name": "Ellenbrook DC",
+    "state": "WA",
+    "postcode": 6069,
+    "bookingUrl": "https://book.nookal.com/bookings/book/2B6Eb6DD-4eB5-D3b7-96d2-692BfCAAd95e/location/LMNWJ"
   }
 ]
