@@ -90,6 +90,12 @@
     "bookingUrl": "https://book.nookal.com/bookings/book/2B6Eb6DD-4eB5-D3b7-96d2-692BfCAAd95e/location/KMXAD"
   },
   {
+    "name": "Regency Park PDC",
+    "state": "SA",
+    "postcode": 5010,
+    "bookingUrl": "https://book.nookal.com/bookings/book/2B6Eb6DD-4eB5-D3b7-96d2-692BfCAAd95e/location/SPXFZ"
+  },
+  {
     "name": "Lonsdale DC",
     "state": "SA",
     "postcode": 5160,
