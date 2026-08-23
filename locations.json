@@ -90,6 +90,12 @@
     "bookingUrl": "https://book.nookal.com/bookings/book/2B6Eb6DD-4eB5-D3b7-96d2-692BfCAAd95e/location/KMXAD"
   },
   {
+    "name": "Regency Park PDC",
+    "state": "SA",
+    "postcode": 5010,
+    "bookingUrl": "https://book.nookal.com/bookings/book/2B6Eb6DD-4eB5-D3b7-96d2-692BfCAAd95e/location/SPXFZ"
+  },
+  {
     "name": "Lonsdale DC",
     "state": "SA",
     "postcode": 5160,
@@ -262,6 +268,12 @@
     "state": "VIC",
     "postcode": 3062,
     "bookingUrl": "https://book.nookal.com/bookings/book/2B6Eb6DD-4eB5-D3b7-96d2-692BfCAAd95e/location/JTGKN"
+  },
+  {
+    "name": "Somerton PUD",
+    "state": "VIC",
+    "postcode": 3062,
+    "bookingUrl": "https://book.nookal.com/bookings/book/2B6Eb6DD-4eB5-D3b7-96d2-692BfCAAd95e/location/KQXAM"
   },
   {
     "name": "Preston DC",
@@ -870,7 +882,7 @@
     "bookingUrl": "https://book.nookal.com/bookings/book/2B6Eb6DD-4eB5-D3b7-96d2-692BfCAAd95e/location/LMNWJ"
   },
   {
-    "name": "Bayswater Vans and DC",
+    "name": "Bayswater Vans",
     "state": "VIC",
     "postcode": 3153,
     "bookingUrl": "https://book.nookal.com/bookings/book/2B6Eb6DD-4eB5-D3b7-96d2-692BfCAAd95e/location/XQEHS"
